@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { CreatePostDto, sortEnum } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -16,7 +16,6 @@ export class PostService {
     @InjectModel(Post.name)
     private readonly PostModel: mongoose.Model<Post>,
   ) {}
-
   async create(createPostDto: CreatePostDto): Promise<Post> {
     const createPost = await this.PostModel.create(createPostDto);
 

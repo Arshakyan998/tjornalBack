@@ -20,6 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     if (user) return user;
 
-    return new NotFoundException('Этото юзер заблакирова или удален!').message;
+    return new NotFoundException('Этото юзер заблакирова или удален!').getResponse();
   }
 }

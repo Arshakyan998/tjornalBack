@@ -7,7 +7,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     // Проверяем ошибку авторизации
     if (err || !user) {
       // Создаем исключение UnauthorizedException с вашим собственным сообщением об ошибке
-      throw new UnauthorizedException('Пользователь не найден');
+      throw new UnauthorizedException('Пользователь не найден или не зарегестрирован');
     }
     // Если пользователь успешно авторизован, возвращаем пользователя
     return user;

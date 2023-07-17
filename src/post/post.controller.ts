@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import {
   Controller,
   Get,
@@ -8,6 +9,7 @@ import {
   Delete,
   Query,
   Header,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ValidationPipe } from '@nestjs/common/pipes';
@@ -23,7 +25,7 @@ import { SearchPostDto } from './dto/search-post.dto';
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
-
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body(new ValidationPipe()) createPostDto: CreatePostDto) {
     return this.postService.create(createPostDto);
@@ -43,8 +45,7 @@ export class PostController {
   sortByType(@Query('sort') sort: sortEnum) {
     return this.postService.sortByType(sort);
   }
- 
- 
+
   @Get('/search')
   search(@Query() dto: SearchPostDto) {
     return this.postService.search(dto);

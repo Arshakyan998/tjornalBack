@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
+import Mongoose from 'mongoose';
 
 export enum sortEnum {
   ASC = 'asc',
@@ -7,6 +8,11 @@ export enum sortEnum {
 }
 
 export class CreatePostDto {
+  @ApiProperty({
+    default: '649c87ba1670d438c40b521d',
+    type: Mongoose.Types.ObjectId,
+  })
+  author: string;
   @ApiProperty({
     type: String,
   })
