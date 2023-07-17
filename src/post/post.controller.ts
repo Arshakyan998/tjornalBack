@@ -20,6 +20,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 import { SearchPostDto } from './dto/search-post.dto';
+import { User } from 'src/decorators/user.decorator';
 
 @ApiTags('Post')
 @Controller('post')
@@ -27,7 +28,12 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body(new ValidationPipe()) createPostDto: CreatePostDto) {
+  create(
+    @User() userInfo: any,
+    @Body(new ValidationPipe()) createPostDto: CreatePostDto,
+  ) {
+    console.log(userInfo);
+
     return this.postService.create(createPostDto);
   }
 
