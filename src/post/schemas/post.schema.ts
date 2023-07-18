@@ -1,7 +1,10 @@
-import { UserDocument, UserSchema } from './../../user/schemas/user.schema';
+import {
+  User,
+  UserDocument,
+  UserSchema,
+} from './../../user/schemas/user.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { User } from 'src/user/schemas/user.schema';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
 
 export type PostDocument = HydratedDocument<Post>;
 
@@ -10,11 +13,14 @@ export type PostDocument = HydratedDocument<Post>;
 })
 export class Post {
   @Prop({
-    ref: 'User',
-    type: mongoose.Schema.Types.ObjectId,
+    type: { id: { type: Types.ObjectId, ref: 'User' } },
+    required: true,
+    _id: false,
   })
-  author: User;
-  
+  author: {
+    id: Types.ObjectId;
+  };
+
   @Prop({
     type: String,
     required: true,
@@ -27,10 +33,10 @@ export class Post {
   tags?: string[];
 
   @Prop({
-    type: String,
+    type: [JSON],
     required: true,
   })
-  body: string;
+  body: any[];
 
   @Prop({
     type: Number,

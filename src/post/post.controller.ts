@@ -21,20 +21,29 @@ import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 import { SearchPostDto } from './dto/search-post.dto';
 import { User } from 'src/decorators/user.decorator';
+import { UserDocument } from 'src/user/schemas/user.schema';
 
 @ApiTags('Post')
-@Controller('post')
+@Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
-    @User() userInfo: any,
-    @Body(new ValidationPipe()) createPostDto: CreatePostDto,
+    @User() userInfo: UserDocument,
+    @Body(new ValidationPipe()) createPostDto:Omit<CreatePostDto, 'author' >,
   ) {
-    console.log(userInfo);
+    const allInfo: CreatePostDto = {
+      body: createPostDto.body,
+      title: createPostDto.title,
+      tags: createPostDto.tags || [],
+      views: 0,
+      author: {
+        id: userInfo._id,
+      },
+    };
 
-    return this.postService.create(createPostDto);
+    return this.postService.create(allInfo);
   }
 
   @Get()

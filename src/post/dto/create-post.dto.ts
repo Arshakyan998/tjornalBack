@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 import Mongoose from 'mongoose';
 
 export enum sortEnum {
@@ -8,11 +8,16 @@ export enum sortEnum {
 }
 
 export class CreatePostDto {
-  @ApiProperty({
-    default: '649c87ba1670d438c40b521d',
-    type: Mongoose.Types.ObjectId,
-  })
-  author: string;
+  // @ApiProperty({
+  //   default: '649c87ba1670d438c40b521d',
+  //   type: {
+  //     id: Mongoose.Types.ObjectId,
+  //   },
+  // })
+  @IsOptional()
+  author: {
+    id: any;
+  };
   @ApiProperty({
     type: String,
   })
@@ -28,8 +33,9 @@ export class CreatePostDto {
     type: [String],
     default: [],
   })
+  @IsOptional()
   @IsArray({
-    message: 'notArray',
+    message: 'tags must by arr',
   })
   tags?: string[];
   views: number;
